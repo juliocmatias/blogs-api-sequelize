@@ -23,13 +23,22 @@ const create = async (user) => {
 
   const newUser = await User.create({ displayName, email, password, image });
 
-  const { password: userPassword, ...userWithoutPassword } = newUser;
+  const { password: userPassword, ...userWithoutPassword } = newUser.dataValues;
 
   const token = createToken(userWithoutPassword);
 
   return { status: httpName.CREATED, data: { token } };
 };
 
+const getAll = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+
+  if (!users) return { status: httpName.NOT_FOUND, data: { message: 'Users not found' } };
+
+  return { status: httpName.SUCCESSFUL, data: users };
+};
+
 module.exports = {
   create,
+  getAll,
 };

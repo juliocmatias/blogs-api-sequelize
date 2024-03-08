@@ -14,7 +14,7 @@ const login = async (email, password) => {
     };
   }
 
-  const { password: userPassword, ...userWithoutPassword } = user;
+  const { password: userPassword, ...userWithoutPassword } = user.dataValues;
 
   const token = createToken(userWithoutPassword);
 
