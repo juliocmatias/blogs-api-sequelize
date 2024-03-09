@@ -18,7 +18,7 @@ const getAll = async (_req, res) => {
 const getById = async (req, res) => {
   const { id } = req.params;
 
-  const { status, data } = await usersService.getById(id);
+  const { status, data } = await usersService.getById(Number(id));
 
   return res.status(mapStatusHTTPS(status)).json(data);
 };
