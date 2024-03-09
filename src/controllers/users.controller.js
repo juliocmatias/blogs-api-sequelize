@@ -15,7 +15,16 @@ const getAll = async (_req, res) => {
   return res.status(mapStatusHTTPS(status)).json(data);
 };
 
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const { status, data } = await usersService.getById(id);
+
+  return res.status(mapStatusHTTPS(status)).json(data);
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
