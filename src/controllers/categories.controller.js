@@ -6,13 +6,13 @@ const createCategory = async (req, res) => {
 
   if (!name) return res.status(400).json({ message: '"name" is required' });
 
-  const { status, data } = await categoriesService.createCategory(name);
+  const { status, data } = await categoriesService.create(name);
 
   return res.status(mapStatusHTTPS(status)).json(data);
 };
 
 const getAllCategories = async (_req, res) => {
-  const { status, data } = await categoriesService.getAllCategories();
+  const { status, data } = await categoriesService.getAll();
 
   return res.status(mapStatusHTTPS(status)).json(data);
 };
