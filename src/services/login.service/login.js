@@ -1,6 +1,6 @@
-const { User } = require('../models');
-const httpName = require('../utils/httpStatusName');
-const { createToken } = require('../utils/auth');
+const { User } = require('../../models');
+const httpName = require('../../utils/httpStatusName');
+const { createToken } = require('../../utils/auth');
 
 const login = async (email, password) => {
   const user = await User.findOne({ where: { email, password } });
@@ -21,6 +21,4 @@ const login = async (email, password) => {
   return { status: httpName.SUCCESSFUL, data: { token } };
 };
 
-module.exports = {
-  login,
-};
+module.exports = login;
