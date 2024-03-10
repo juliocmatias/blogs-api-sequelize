@@ -13,7 +13,7 @@ const createPost = async (req, res) => {
 const getPostsByUserId = async (req, res) => {
   const { id } = req.user;
 
-  const { status, data } = await postsService.getPostsByUserId(id);
+  const { status, data } = await posts.getByUserId(id);
 
   return res.status(mapStatusHTTPS(status)).json(data);
 };
