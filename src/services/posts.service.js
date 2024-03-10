@@ -38,4 +38,34 @@ const getPostsByUserId = async (userId) => {
   return { status: httpName.SUCCESSFUL, data: posts };
 };
 
-module.exports = { createPost, getPostsByUserId };
+const getPostById = async (id) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!post) return { status: httpName.NOT_FOUND, data: { message: 'Post does not exist' } };
+
+  return { status: httpName.SUCCESSFUL, data: post };
+};
+
+const updatePost = async (id, title, content, userId) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  if (!post) return { status: httpName.NOT_FOUND, data: { message: 'Post does not exist' } };
+  if (post.userId !== userId) { 
+    return { status: httpName.FORBIDDEN, data: { message: 'Unauthorized user' } };
+  }
+  await BlogPost.update({ title, content }, { where: { id } });
+
+  return { status: httpName.SUCCESSFUL, data: post };
+};
+
+module.exports = { createPost, getPostsByUserId, getPostById };

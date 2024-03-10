@@ -18,7 +18,16 @@ const getPostsByUserId = async (req, res) => {
   return res.status(mapStatusHTTPS(status)).json(data);
 };
 
+const getPostById = async (req, res) => {
+  const { id } = req.params;
+
+  const { status, data } = await postsService.getPostById(id);
+
+  return res.status(mapStatusHTTPS(status)).json(data);
+};
+
 module.exports = {
   createPost,
   getPostsByUserId,
+  getPostById,
 };

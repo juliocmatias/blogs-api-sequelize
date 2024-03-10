@@ -5,7 +5,7 @@ const checkRequiredFields = (receivedFields, requiredFields) => {
     || receivedFields[currentField] === ''
     || receivedFields[currentField] === undefined
     ) {
-      return `O campo "${currentField}" é obrigatório`;
+      return 'Some required fields are missing';
     }
   }
 };
