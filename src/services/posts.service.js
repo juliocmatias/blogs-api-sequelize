@@ -1,28 +1,7 @@
-const { BlogPost, PostCategory, Category, sequelize } = require('../models');
+const { BlogPost, Category, User, sequelize } = require('../models');
 const httpName = require('../utils/httpStatusName');
-
-// a createPost é uma função que cria um post no banco de dados.
-// Ela recebe um título (title), um conteúdo (content) e uma lista de ids de categorias (categoryIds).
-// Ela deve retornar um objeto com a chave status e a chave data.
-
-const verifyCategoriesExistence = async (categoryIds) => {
-  const verify = categoryIds.map(async (categoryId) => {
-    const category = await Category.findByPk(categoryId);
-    return !!category;
-  });
-  
-  const verifyResults = await Promise.all(verify);
-
-  return verifyResults.every((result) => result === true);
-};
-
-const createPostCategories = async (postId, categoryIds, transaction) => {
-  const postCategories = categoryIds.map(async (categoryId) => {
-    await PostCategory.create({ postId, categoryId }, { transaction });
-  });
-
-  await Promise.all(postCategories);
-};
+const verifyCategoriesExistence = require('./utils/verifyCategoriesExistence');
+const createPostCategories = require('./utils/createPostCategories');
 
 const createPost = async (title, content, userId, categoryIds) => {
   if (!await verifyCategoriesExistence(categoryIds)) {
@@ -47,6 +26,18 @@ const createPost = async (title, content, userId, categoryIds) => {
   }
 };
 
-module.exports = {
-  createPost,
+const getPostById = async (id) => {
+  const post = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories' },
+    ],
+  });
+  if (!post) {
+    return { status: httpName.NOT_FOUND, data: { message: 'Post does not exist' } };
+  }
+  
+  return { status: httpName.SUCCESSFUL, data: post };
 };
+
+module.exports = { createPost, getPostById };
