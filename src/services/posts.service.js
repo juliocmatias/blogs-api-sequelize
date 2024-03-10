@@ -26,18 +26,16 @@ const createPost = async (title, content, userId, categoryIds) => {
   }
 };
 
-const getPostById = async (id) => {
-  const post = await BlogPost.findByPk(id, {
+const getPostsByUserId = async (userId) => {
+  const posts = await BlogPost.findAll({
+    where: { userId },
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      { model: Category, as: 'categories' },
+      { model: Category, as: 'categories', through: { attributes: [] } },
     ],
   });
-  if (!post) {
-    return { status: httpName.NOT_FOUND, data: { message: 'Post does not exist' } };
-  }
   
-  return { status: httpName.SUCCESSFUL, data: post };
+  return { status: httpName.SUCCESSFUL, data: posts };
 };
 
-module.exports = { createPost, getPostById };
+module.exports = { createPost, getPostsByUserId };

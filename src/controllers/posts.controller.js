@@ -10,6 +10,15 @@ const createPost = async (req, res) => {
   return res.status(mapStatusHTTPS(status)).json(data);
 };
 
+const getPostsByUserId = async (req, res) => {
+  const { id } = req.user;
+
+  const { status, data } = await postsService.getPostsByUserId(id);
+
+  return res.status(mapStatusHTTPS(status)).json(data);
+};
+
 module.exports = {
   createPost,
+  getPostsByUserId,
 };

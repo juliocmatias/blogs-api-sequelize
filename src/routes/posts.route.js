@@ -3,5 +3,6 @@ const { postsController } = require('../controllers');
 const { validateToken, validatePosts } = require('../middlewares');
 
 route.post('/', validateToken, validatePosts, postsController.createPost);
+route.get('/', validateToken, postsController.getPostsByUserId);
 
 module.exports = route;
