@@ -16,7 +16,7 @@ services:
     # Mesmo que `docker run -i`
     stdin_open: true
     # Substitui o comando padrão da imagem do node
-    command: bash
+    command: dev
     # Restarta a imagem caso algo a faça parar
     restart: always
     # Diretório padrão de execução
@@ -28,8 +28,8 @@ services:
       - ./:/app
     # Lista de serviços do qual este serviço depende
     depends_on:
-      # Precisa do banco funcionando antes de subir o node
-      - db
+      db:
+        condition: service_healthy
     # Lista de portas mapeadas de dentro para fora do container
     # na notação porta_de_fora:porta_de_dentro
     ports:
@@ -44,6 +44,11 @@ services:
       API_HOST: 'node'
       API_PORT: 3001
       NODE_ENV: 'development'
+    # deve aguarda a aplicação ficar operacional
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      timeout: 10s
+      retries: 5
     networks:
       - blogs_api_net
 
@@ -61,6 +66,11 @@ services:
       - 33060:33060
     environment:
       MYSQL_ROOT_PASSWORD: password
+    healthcheck:
+      # Deve aguardar o banco ficar operacional
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
     networks:
       - blogs_api_net
 
