@@ -78,6 +78,7 @@ describe('login test', function () {
       expect(body).to.have.property('message');
       expect(body.message).to.be.deep.equal('Internal Server Error');
       expect(stubConsoleError).to.have.been.calledOnce;
+      expect(stubConsoleError).to.have.been.calledWith('error server ------', 'Error');
     });
 
     it('should return 400 if the user is not found, with the message "Invalid fields"', async function () {
