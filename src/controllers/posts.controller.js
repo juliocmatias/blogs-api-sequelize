@@ -40,7 +40,8 @@ const updatePost = async (req, res) => {
     const { status, data } = await postsService.update(id, title, content, userId);
     return res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    return res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 

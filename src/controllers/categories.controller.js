@@ -9,7 +9,8 @@ const createCategory = async (req, res) => {
     const { status, data } = await categoriesService.create(name);
     res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -18,7 +19,8 @@ const getAllCategories = async (_req, res) => {
   try {
     res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 

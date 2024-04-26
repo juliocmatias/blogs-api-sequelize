@@ -9,7 +9,8 @@ const create = async (req, res) => {
 
     return res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    return res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -19,7 +20,8 @@ const getAll = async (_req, res) => {
 
     return res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    return res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -31,7 +33,8 @@ const getById = async (req, res) => {
 
     return res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    return res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 

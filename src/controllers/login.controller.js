@@ -7,7 +7,8 @@ const login = async (req, res) => {
     const { status, data } = await loginService.login(email, password);
     res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
-    res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+    console.error('error server ------', error.message);
+    res.status(mapStatusHTTPS(error.status)).json({ message: 'Internal Server Error' });
   }
 };
 
