@@ -33,6 +33,15 @@ const users = [
   },
 ];
 
+const usersModelSequelize = {
+  dataValues: users,
+}
+
+const userModelSequelize = {
+  dataValues: userId1,
+  ...userId1,
+}
+
 const usersWithoutPass = [
   {
     id: 1,
@@ -63,4 +72,6 @@ module.exports = {
   loginBody,
   users,
   usersWithoutPass,
+  usersModelSequelize,
+  userModelSequelize,
 };
