@@ -15,8 +15,8 @@ const createCategory = async (req, res) => {
 };
 
 const getAllCategories = async (_req, res) => {
-  const { status, data } = await categoriesService.getAll();
   try {
+    const { status, data } = await categoriesService.getAll();
     res.status(mapStatusHTTPS(status)).json(data);
   } catch (error) {
     console.error('error server ------', error.message);
