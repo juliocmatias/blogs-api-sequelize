@@ -22,7 +22,7 @@
     "start": "node .",
     "drop": "npx sequelize-cli db:drop",
     "seed": "npx sequelize-cli db:seed:all",
-    "app:start": "docker-compose up -d && sleep 15 && docker exec -i blogs_api npm run seed",
+    "app:start": "docker-compose up -d --build && sleep 15 && docker exec -i blogs_api npm run seed",
     "app:reset": "docker exec -i blogs_api npm run drop && docker exec -i blogs_api npm run prestart && docker exec -i blogs_api npm run seed",
     "app:stop": "docker-compose down",
     "api:terminal": "docker stop blogs_api && env $(cat .env) npm run dev",
