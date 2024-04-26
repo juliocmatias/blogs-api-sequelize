@@ -5,16 +5,21 @@ const createCategory = async (req, res) => {
   const { name } = req.body;
 
   if (!name) return res.status(400).json({ message: '"name" is required' });
-
-  const { status, data } = await categoriesService.create(name);
-
-  return res.status(mapStatusHTTPS(status)).json(data);
+  try {
+    const { status, data } = await categoriesService.create(name);
+    res.status(mapStatusHTTPS(status)).json(data);
+  } catch (error) {
+    res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+  }
 };
 
 const getAllCategories = async (_req, res) => {
   const { status, data } = await categoriesService.getAll();
-
-  return res.status(mapStatusHTTPS(status)).json(data);
+  try {
+    res.status(mapStatusHTTPS(status)).json(data);
+  } catch (error) {
+    res.status(mapStatusHTTPS(error.status)).json({ message: error.message });
+  }
 };
 
 module.exports = {
