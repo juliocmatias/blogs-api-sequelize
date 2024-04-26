@@ -1,6 +1,7 @@
 const express = require('express');
 const { loginRoute, usersRoute, 
   categoriesRoute, postsRoute } = require('./routes');
+require('express-async-errors');
 
 // ...
 
@@ -16,6 +17,10 @@ app.use('/login', loginRoute);
 app.use('/user', usersRoute);
 app.use('/categories', categoriesRoute);
 app.use('/post', postsRoute);
+
+app.use((err, _req, res, _next) => {
+  res.status(500).json({ message: err.message });
+});
 
 // ...
 
