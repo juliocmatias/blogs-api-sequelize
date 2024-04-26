@@ -1,12 +1,13 @@
 const sinon = require('sinon');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const sinonChai = require('sinon-chai');
 const app = require('../../src/app');
 const { User } = require('../../src/models');
 const { userMock } = require('../mocks');
 
 const { expect } = chai;
-
+chai.use(sinonChai);
 chai.use(chaiHttp);
 
 describe('login test', function () {
