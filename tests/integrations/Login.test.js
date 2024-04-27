@@ -64,24 +64,6 @@ describe('login test', function () {
      return await Promise.all(promise);
     });
 
-    // it('should return 500 if an error occurs, with the message "Internal Server Error"', async function () {
-    //   // arrange
-    //   const stubConsoleError = sinon.stub(console, 'error');
-    //   sinon.stub(User, 'findOne').throws(new Error('Error'));
-
-    //   // act
-    //   const { status, body } = await chai.request(app)
-    //     .post('/login')
-    //     .send(bodyReq);
-
-    //   // assert
-    //   expect(status).to.equal(500);
-    //   expect(body).to.have.property('message');
-    //   expect(body.message).to.be.deep.equal('Internal Server Error');
-    //   expect(stubConsoleError).to.have.been.calledOnce;
-    //   expect(stubConsoleError).to.have.been.calledWith('error server ------', 'Error');
-    // });
-
     it('should return 400 if the user is not found, with the message "Invalid fields"', async function () {
       // arrange
       sinon.stub(User, 'findOne').resolves(null);
