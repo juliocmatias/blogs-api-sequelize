@@ -16,6 +16,13 @@ const userId2 = {
   image: 'https://sportbuzz.uol.com.br/media/_versions/gettyimages-52491565_widelg.jpg',
 };
 
+const newUser = {
+  displayName: 'Ayrton Senna',
+  email: 'ayrtonsenna@gmail.com',
+  password: '123456',
+  image: 'https://i.pinimg.com/564x/6a/80/ba/6a80ba4f73cd18d9e61fb51dad15b537.jpg',
+};
+
 const users = [
   {
     id: 1,
@@ -41,6 +48,12 @@ const userModelSequelize = {
   dataValues: userId1,
   ...userId1,
 }
+
+const newUserModelSequelize = {
+  dataValues: newUser,
+  id: 3,
+  ...newUser,
+};
 
 const usersWithoutPass = [
   {
@@ -74,4 +87,6 @@ module.exports = {
   usersWithoutPass,
   usersModelSequelize,
   userModelSequelize,
+  newUser,
+  newUserModelSequelize,
 };
