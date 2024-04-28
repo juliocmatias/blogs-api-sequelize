@@ -7,7 +7,6 @@ const { User } = require('../../src/models');
 const { userMock } = require('../mocks');
 const validationErrorServer = require('./ValidationErroServer.test');
 const validationItToken = require('./ValidationItToken.test');
-const jwt = require('jsonwebtoken');
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -118,13 +117,12 @@ describe('Users test', function () {
 
     it('should return 200 and all users without the password', async function () {
       // arrange
-      sinon.stub(jwt, 'verify').returns({ ...userMock.usersWithoutPass[0] });
       sinon.stub(User, 'findAll').resolves(userMock.usersWithoutPass);
       
       // act
       const { status, body } = await chai.request(app)
         .get('/user')
-        .set('authorization', tokenRequest);
+        .set('authorization', `Bearer ${tokenRequest}`);
       
       // assert
       expect(status).to.equal(200);
@@ -144,13 +142,12 @@ describe('Users test', function () {
     
     it('should return 200 and the user without the password', async function () {
       // arrange
-      sinon.stub(jwt, 'verify').returns({ ...userMock.usersWithoutPass[0] });
       sinon.stub(User, 'findByPk').resolves(userMock.usersWithoutPass[0]);
       
       // act
       const { status, body } = await chai.request(app)
         .get('/user/1')
-        .set('authorization', tokenRequest);
+        .set('authorization', `Bearer ${tokenRequest}`);
       
       // assert
       expect(status).to.equal(200);
@@ -159,14 +156,13 @@ describe('Users test', function () {
 
     it('should return 404 if the user is not found, with a message "User does not exist"', async function () {
       // arrange
-      sinon.stub(jwt, 'verify').returns({ ...userMock.usersWithoutPass[0] });
       sinon.stub(User, 'findByPk').resolves(null);
 
       // act
 
       const { status, body } = await chai.request(app)
         .get('/user/1')
-        .set('authorization', tokenRequest);
+        .set('authorization', `Bearer ${tokenRequest}`);
       
       // assert
       expect(status).to.equal(404);
