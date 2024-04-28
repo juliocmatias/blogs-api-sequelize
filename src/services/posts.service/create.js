@@ -22,7 +22,7 @@ const createPost = async (title, content, userId, categoryIds) => {
 
     return { status: httpName.CREATED, data: postCreated.dataValues };
   } catch (err) {
-    return { status: httpName.INTERNAL_SERVER_ERROR, message: err.message };
+    return { status: httpName.INTERNAL_SERVER_ERROR, data: { message: err.message } };
   }
 };
 

@@ -28,7 +28,7 @@ describe('Posts test', function () {
     tokenRequest = token;      
   });
 
-  describe('POST /posts', function () {
+  describe('POST /post', function () {
 
     beforeEach(async function () { 
       sinon.restore();     
@@ -76,5 +76,158 @@ describe('Posts test', function () {
       expect(body).to.have.property('updated', postsMock.postCreated.updated);
     });
 
+    it('should return 400 when categories that don\'t exist with a message "one or more "categoryIds" not found"', async function () {
+      // arrange
+      const { categoryIds } = postsMock.postBody;
+      const categoriesExistence = categoryIds.map(async (categoryId) => {
+        sinon.stub(Category, 'findByPk').resolves(null);
+      });
+
+      await Promise.all(categoriesExistence);
+
+      const bodyRequest = { ...postsMock.postBody };
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(bodyRequest);
+
+      // assert
+
+      expect(status).to.be.equals(400);
+      expect(body).to.have.property('message', 'one or more "categoryIds" not found');
+    });
+
+    it('should return 500 when an case sequelize throw an error', async function () {
+      // arrange
+      const { categoryIds } = postsMock.postBody;
+      const categoriesExistence = categoryIds.map(async (categoryId) => {
+        sinon.stub(Category, 'findByPk').resolves({ id: categoryId });
+      });
+
+      await Promise.all(categoriesExistence);
+
+      sinon.stub(sequelize, 'transaction').throws(Error('Internal Server Error'));
+
+
+      const bodyRequest = { ...postsMock.postBody };
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(bodyRequest);
+
+      // assert
+
+      expect(status).to.be.equals(500);
+      expect(body).to.have.property('message', 'Internal Server Error');
+    });
+
+    it('should return 500 when an case postsService throw an error', async function () {
+      const { categoryIds } = postsMock.postBody;
+      const categoriesExistence = categoryIds.map(async (categoryId) => {
+        sinon.stub(Category, 'findByPk').throws(Error('Internal Server Error'));
+      });
+
+      await Promise.all(categoriesExistence);
+
+
+      const bodyRequest = { ...postsMock.postBody };
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(bodyRequest);
+
+      // assert
+
+      expect(status).to.be.equals(500);
+      expect(body).to.have.property('message', 'Internal Server Error');
+    });
+
+    it('should return 400 when the categoryIds are not sent, with a message "Some required fields are missing"', async function () {
+      // arrange
+      const bodyRequest = { ...postsMock.postBody };
+      
+      const { categoryIds, ...rest } = bodyRequest;
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(rest);
+
+      // assert
+
+      expect(status).to.be.equals(400);
+      expect(body).to.have.property('message', 'Some required fields are missing');
+    });
+
+    it('should return 400 when the categoryIds are not an array, with a message "Some required fields are missing"', async function () {
+      // arrange
+      const bodyRequest = { ...postsMock.postBody, categoryIds: '1' };
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(bodyRequest);
+
+      // assert
+
+      expect(status).to.be.equals(400);
+      expect(body).to.have.property('message', 'Some required fields are missing');
+    });
+
+    it('should return 400 when the categoryIds are empty, with a message "Some required fields are missing"', async function () {
+      // arrange
+      const bodyRequest = { ...postsMock.postBody, categoryIds: [] };
+
+      // act
+
+      const { status, body } = await chai.request(app)
+        .post('/post')
+        .set('authorization', `Bearer ${tokenRequest}`)
+        .send(bodyRequest);
+
+      // assert
+
+      expect(status).to.be.equals(400);
+      expect(body).to.have.property('message', 'Some required fields are missing');
+    });
+
+    it('should return 400 when the title or content is not sent, with a message "Some required fields are missing"', async function () {
+      // arrange
+      const bodyRequest = { ...postsMock.postBody };
+
+      const requiredFields = ['title', 'content'];
+
+      const promiseRequiredFields = requiredFields.map(async (field) => {
+        const body = { ...bodyRequest, [field]: '' };
+
+        // act
+        const { status, body: bodyResponse } = await chai.request(app)
+          .post('/post')
+          .set('authorization', `Bearer ${tokenRequest}`)
+          .send(body);
+
+        // assert
+
+        expect(status).to.be.equals(400);
+        expect(bodyResponse).to.have.property('message', 'Some required fields are missing');
+      });
+
+      await Promise.all(promiseRequiredFields);
+    });
+
+    validationItToken('/post', 'post');
   });
 });
