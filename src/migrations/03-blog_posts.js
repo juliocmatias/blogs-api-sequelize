@@ -7,7 +7,10 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       title: {
         type: Sequelize.STRING,
@@ -20,10 +23,11 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'users',
           key: 'id',
-          onDelete: 'CASCADE'
         },
         field: 'user_id',
         primaryKey: true
