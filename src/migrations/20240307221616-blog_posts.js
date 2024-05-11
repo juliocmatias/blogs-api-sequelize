@@ -26,7 +26,6 @@ module.exports = {
           onDelete: 'CASCADE'
         },
         field: 'user_id',
-        primaryKey: true
       },
       published: {
         type: Sequelize.DATE,
