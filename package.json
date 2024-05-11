@@ -14,7 +14,8 @@
     "morgan": "1.10.0",
     "mysql2": "3.0.0",
     "sequelize": "6.30.0",
-    "shelljs": "0.8.5"
+    "shelljs": "0.8.5",
+    "swagger-ui-express": "5.0.0"
   },
   "main": "src/server.js",
   "scripts": {
@@ -22,9 +23,12 @@
     "start": "node .",
     "drop": "npx sequelize-cli db:drop",
     "seed": "npx sequelize-cli db:seed:all",
-    "app:start": "docker-compose up -d && sleep 15 && docker exec -i blogs_api npm run seed",
+    "reset": "npm run drop && npm run prestart && npm run seed",
+    "app:start": "docker-compose up -d",
+    "app:seed": "docker exec -i blogs_api npm run seed",
     "app:reset": "docker exec -i blogs_api npm run drop && docker exec -i blogs_api npm run prestart && docker exec -i blogs_api npm run seed",
     "app:stop": "docker-compose down",
+    "app:log": "docker logs -f blogs_api",
     "api:terminal": "docker stop blogs_api && env $(cat .env) npm run dev",
     "api:docker": "docker start blogs_api",
     "posttest": "npm run kill:test",
@@ -51,5 +55,6 @@
     "sinon-chai": "3.7.0",
     "supertest": "4.0.2",
     "wait-on": "6.0.1"
-  }
+  },
+  "license": "ISC"
 }
