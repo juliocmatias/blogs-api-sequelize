@@ -4,7 +4,7 @@
 
 ## ℹ️ Summary
   
-***This application was developed when I created the back-end module by [Trybe](https://www.betrybe.com/). Being developed in Node.js using the sequelize ORM for CRUD operations on posts, following the principles of a RESTful API with layered architecture, in addition to authentication via endpoints using Bearer Token with encryption using JWT.***
+***This application was developed in the back-end module by [Trybe](https://www.betrybe.com/). Being developed in Node.js using Sequelize ORM for CRUD operations on posts, following the principles of a RESTful API with layered architecture, in addition to authentication via endpoints using Bearer Token with encryption using JWT.***
 
 ## 🚀 Technology Used
 
