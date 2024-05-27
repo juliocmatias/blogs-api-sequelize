@@ -30,7 +30,6 @@ module.exports = {
           key: 'id',
         },
         field: 'user_id',
-        primaryKey: true
       },
       published: {
         type: Sequelize.DATE,
