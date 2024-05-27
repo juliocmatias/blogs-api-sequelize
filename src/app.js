@@ -1,6 +1,8 @@
 const express = require('express');
+const swaggerUI = require('swagger-ui-express');
 const { loginRoute, usersRoute, 
   categoriesRoute, postsRoute } = require('./routes');
+
 require('express-async-errors');
 
 // ...
@@ -11,6 +13,8 @@ const app = express();
 app.get('/', (_request, response) => {
   response.send();
 });
+
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(require('./swagger.json')));
 
 app.use(express.json());
 app.use('/login', loginRoute);
